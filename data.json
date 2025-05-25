@@ -1,0 +1,10 @@
+[
+  {
+    "nombre": "Luis Torres",
+    "asistencias": ["A", "A", "T", "F", "A", "A", "R", "R", "R", "R", "R", "R", "R", "R", "R", "R"]
+  },
+  {
+    "nombre": "Ana Ruiz",
+    "asistencias": ["A", "A", "A", "T", "F", "F", "F", "F", "A", "A", "A", "A", "T", "T", "A", "A"]
+  }
+]
