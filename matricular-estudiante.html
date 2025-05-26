@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matricular Estudiante</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Matricular Estudiante en Curso</h1>
+
+    <form id="form-matricula">
+        <label for="estudiante">Estudiante:</label><br>
+        <select id="estudiante" name="estudiante" required></select><br><br>
+
+        <label for="curso">Curso:</label><br>
+        <select id="curso" name="curso" required></select><br><br>
+
+        <button type="submit">Matricular</button>
+        <a href="index.html" class="button-link">Volver</a>
+    </form>
+
+    <div id="mensaje"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        Promise.all([
+            fetch('http://localhost:3000/estudiantes').then(res => res.json()),
+            fetch('http://localhost:3000/cursos/1').then(res => res.json())
+        ]).then(([estudiantes, cursos]) => {
+            const estSelect = document.getElementById('estudiante');
+            const curSelect = document.getElementById('curso');
+
+            estudiantes.forEach(e => {
+            const option = document.createElement('option');
+            option.value = e.EstudianteID;
+            option.textContent = e.Nombre;
+            estSelect.appendChild(option);
+            });
+
+            cursos.forEach(c => {
+            const option = document.createElement('option');
+            option.value = c.CursoID;
+            option.textContent = c.NombreCurso;
+            curSelect.appendChild(option);
+            });
+        });
+
+        document.getElementById('form-matricula').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const estudianteID = document.getElementById('estudiante').value;
+            const cursoID = document.getElementById('curso').value;
+
+            const res = await fetch('http://localhost:3000/matricula', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ estudianteID, cursoID })
+            });
+
+            const mensaje = document.getElementById('mensaje');
+            const texto = await res.text();
+
+            if (res.status === 201) {
+            mensaje.textContent = '✅ ' + texto;
+            mensaje.style.color = 'green';
+            } else {
+            mensaje.textContent = '❌ ' + texto;
+            mensaje.style.color = 'red';
+            }
+        });
+        });
+    </script>
+</body>
+</html>
