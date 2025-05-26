@@ -2,10 +2,12 @@ const express = require('express');
 const sql = require('mssql');
 const cors = require('cors');
 const dbConfig = require('../dbconfig');
+const path = require('path');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '..')));
 
 app.get('/asistencias/:cursoID', async (req, res) => {
   const { cursoID } = req.params;
