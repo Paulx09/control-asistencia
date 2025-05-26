@@ -1,8 +1,8 @@
 // dbconfig.js
 module.exports = {
-  user: 'sa',
-  password: 'password',
-  server: 'ServerName',
+  user: 'tu_usuario',
+  password: 'tu_password',
+  server: 'localhost',
   database: 'ControlAsistencia_DB',
   options: {
     trustServerCertificate: true,
