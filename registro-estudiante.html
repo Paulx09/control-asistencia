@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar estudiante</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Registro de Estudiante</h1>
+
+    <form id="form-estudiante">
+        <label for="nombre">Nombre del Estudiante:</label><br>
+        <input type="text" id="nombre" name="nombre" required><br><br>
+
+        <label for="matricula">Matrícula:</label><br>
+        <input type="text" id="matricula" name="matricula" required><br><br>
+
+        <button type="submit">Registrar</button>
+        <a href="index.html" class="button-link">Volver</a>
+    </form>
+
+    <div id="mensaje"></div>
+
+    <script>
+        document.getElementById('form-estudiante').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const nombre = document.getElementById('nombre').value.trim();
+        const matricula = document.getElementById('matricula').value.trim();
+
+        const res = await fetch('http://localhost:3000/estudiantes', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ nombre, matricula })
+        });
+
+        const mensajeDiv = document.getElementById('mensaje');
+
+        if (res.status === 201) {
+            mensajeDiv.textContent = '✅ Estudiante registrado correctamente.';
+            mensajeDiv.style.color = 'green';
+            e.target.reset();
+        } else {
+            const error = await res.text();
+            mensajeDiv.textContent = '❌ ' + error;
+            mensajeDiv.style.color = 'red';
+        }
+        });
+    </script>
+</body>
+</html>
