@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen de Estudiante</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Resumen de Estudiante</h1>
+
+    <label for="curso-select">Seleccionar curso:</label>
+    <select id="curso-select"></select>
+
+    <a href="index.html" class="button-link">Volver</a>
+
+    <div id="resumen-grid" class="resumen-grid">
+
+    </div>
+
+    <script type="module">
+        const DOCENTE_ID = 1;
+
+        document.addEventListener("DOMContentLoaded", () => {
+        cargarCursos();
+        });
+
+        function cargarCursos() {
+        fetch(`http://localhost:3000/cursos/${DOCENTE_ID}`)
+            .then(res => res.json())
+            .then(cursos => {
+            const select = document.getElementById("curso-select");
+            cursos.forEach(curso => {
+                const option = document.createElement("option");
+                option.value = curso.CursoID;
+                option.textContent = curso.NombreCurso;
+                select.appendChild(option);
+            });
+
+            if (cursos.length > 0) {
+                select.value = cursos[0].CursoID;
+                renderResumenCurso(select.value);
+            }
+
+            select.addEventListener("change", () => renderResumenCurso(select.value));
+            });
+        }
+
+        function renderResumenCurso(cursoID) {
+        fetch(`http://localhost:3000/resumen/${cursoID}`)
+            .then(res => res.json())
+            .then(data => renderResumen(data));
+        }
+
+        function renderResumen(estudiantes) {
+        const grid = document.getElementById("resumen-grid");
+        grid.innerHTML = "";
+
+        const headers = ["Nombre", "A", "T", "F", "R", "Puntos"];
+        headers.forEach(header => {
+            const cell = document.createElement("div");
+            cell.textContent = header;
+            cell.className = "grid-header";
+            grid.appendChild(cell);
+        });
+
+        estudiantes.forEach(est => {
+            [est.nombre, est.A, est.T, est.F, est.R, est.puntos.toFixed(1)].forEach(val => {
+            const cell = document.createElement("div");
+            cell.textContent = val;
+            grid.appendChild(cell);
+            });
+        });
+        }
+    </script>
+</body>
+</html>
