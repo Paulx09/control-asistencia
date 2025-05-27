@@ -35,7 +35,17 @@ a {
   border: 1px solid #aaa;
 }
 
-.grid-container > div {
+.resumen-grid {
+  display: grid;
+  grid-template-columns: 200px repeat(5, 1fr);
+  gap: 1px;
+  background-color: #ccc;
+  margin-top: 20px;
+  border: 1px solid #aaa;
+}
+
+.grid-container > div,
+.resumen-grid > div {
   padding: 10px;
   text-align: center;
   background-color: white;
